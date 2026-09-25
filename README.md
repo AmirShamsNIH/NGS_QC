@@ -163,7 +163,8 @@ and the cDNA in R2.  Barcodes do not map to any genome, so with
 
 | Tool | Bulk (default) | `--single-cell` |
 |------|---------------|-----------------|
-| FastQC, fastp, SeqKit, AfterQC, BBDuk, SortMeRNA | R1 + R2 | R1 + R2 |
+| FastQC, SeqKit, AfterQC, SortMeRNA | R1 + R2 | R1 + R2 |
+| fastp, BBDuk | R1 + R2 | R2 only |
 | Kraken2 (+ Bracken) | R1 + R2 paired | R2 only |
 | FastQ Screen | R1 + R2 | R2 only |
 | KAT | R1 + R2 | R2 only |

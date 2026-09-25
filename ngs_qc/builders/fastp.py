@@ -2,13 +2,15 @@
 fastp quality statistics in **report-only** mode: adapter trimming, quality
 filtering and length filtering are disabled and reads go to /dev/null, so
 nothing is modified.  The JSON report is consumed by MultiQC.
+
+Single-cell mode: only R2 (cDNA) is analysed; R1 holds barcodes + UMIs.
 """
 
 from __future__ import annotations
 
 from ..config import MODULES
 from ..fastq import Sample
-from .base import Context, Job, compose, prepare_reads, q
+from .base import Context, Job, biological_reads, compose, prepare_reads, q
 
 TOOL = "fastp"
 
@@ -18,7 +20,7 @@ def build(sample: Sample, ctx: Context) -> list[Job]:
     log     = f"{out_dir}/{sample.name}.fastp.log"
     json    = f"{out_dir}/{sample.name}.fastp.json"
     html    = f"{out_dir}/{sample.name}.fastp.html"
-    prep, reads, temp = prepare_reads(sample, out_dir, ctx)
+    prep, reads, temp = prepare_reads(sample, out_dir, ctx, biological_reads(sample, ctx))
 
     inputs = f"-i {q(reads[0])}" + (f" -I {q(reads[1])}" if len(reads) == 2 else "")
     steps = prep + [

@@ -66,9 +66,9 @@ Options
     Label used for sub-directories and file prefixes.
     Defaults to the basename of INPUT_DIR.
 --single-cell
-    Contamination / k-mer tools (Kraken2, FastQ Screen, KAT) process
-    only R2 (cDNA) reads, and insert size is skipped.  FastQC, fastp and
-    the other per-read tools still run on all reads.
+    Kraken2, FastQ Screen, KAT, fastp and BBDuk process only R2 (cDNA)
+    reads, and insert size is skipped.  FastQC and the other per-read
+    tools still run on all reads.
 --kraken-db PATH
     Kraken2 / Bracken database directory (default: KRAKEN2_DB in config).
 --sortmerna-db PATH
@@ -426,8 +426,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         default=False,
         help=(
-            "Single-cell mode: contamination / k-mer tools (Kraken2, FastQ "
-            "Screen, KAT) process only R2 (cDNA reads) and insert size "
+            "Single-cell mode: Kraken2, FastQ Screen, KAT, fastp and BBDuk "
+            "process only R2 (cDNA reads) and insert size "
             "is skipped. Other tools still run on all reads."
         ),
     )
