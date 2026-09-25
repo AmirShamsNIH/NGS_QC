@@ -68,6 +68,11 @@ _FATAL_PATTERNS: list[re.Pattern] = [
 
 _LOG_TAIL_LINES = 30   # lines to include in per-tool detail sheets
 
+# Written by a builder before re-running a failed command (e.g. KAT); only
+# the log after the last retry decides the job's status, so a crash that
+# the retry recovered from is not reported as a failure.
+_RETRY_MARKER = "retrying once"
+
 
 # ---------------------------------------------------------------------------
 # Data model
@@ -135,7 +140,7 @@ def check_job(job: dict[str, Any]) -> ToolResult:
         if not hits:
             missing.append(pattern)
 
-    fatal = _fatal_lines(log_text)
+    fatal = _fatal_lines(log_text.rsplit(_RETRY_MARKER, 1)[-1])
 
     if not log_exists and not found:
         status = "MISSING"

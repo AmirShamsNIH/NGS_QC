@@ -5,7 +5,9 @@ histogram to ``<prefix>`` (no extension), a plot to ``<prefix>.png`` and
 ``<prefix>.dist_analysis.json``, which MultiQC parses.
 
 KAT 2.4.2 intermittently segfaults while binning k-mers (not reproducible
-on re-run of the same input), so a failed run is retried once.
+on re-run of the same input), so a failed run is retried once.  The retry
+message is the marker ``collect_qc_logs.py`` uses to ignore the first
+attempt's crash when the retry succeeds.
 
 Single-cell mode: only R2 (cDNA) is analysed.
 """

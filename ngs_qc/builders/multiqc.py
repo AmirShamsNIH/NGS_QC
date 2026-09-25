@@ -45,8 +45,9 @@ def build_multiqc_config(study: str) -> str:
             {"type": "remove", "pattern": "_subset"},
         ],
         "table_sample_merge": {
-            "R1": [{"type": "regex", "pattern": "_R1(_\\d{3})?$"}],
-            "R2": [{"type": "regex", "pattern": "_R2(_\\d{3})?$"}],
+            # keep the chunk number so chunks of one library stay separate rows
+            "R1": [{"type": "regex", "pattern": "_R1(?=(_\\d{3})?$)"}],
+            "R2": [{"type": "regex", "pattern": "_R2(?=(_\\d{3})?$)"}],
         },
         "module_order": [
             {"kraken": {"name": "Kraken2", "anchor": "kraken2",

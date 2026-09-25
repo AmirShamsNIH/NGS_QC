@@ -148,6 +148,8 @@ The input directory is scanned for `*.fastq`, `*.fq` (optionally `.gz`).
 * Index reads (`_I1`, `_I2`) are skipped.  `Undetermined_*` reads are QC'd
   as their own sample (e.g. `Undetermined_L001`), since their size and
   content reveal demultiplexing problems.
+* A library split into several chunks (`_R1_001`, `_R1_002`, ...) is QC'd
+  one chunk per sample, named `<stem>_001`, `<stem>_002`, ...
 * Two files resolving to the same sample name is an error.
 * Uncompressed FASTQ is supported.
 
@@ -240,6 +242,8 @@ bash <OUTPUT_DIR>/<study>_execution.sh
 
 The wrapper (with `set -euo pipefail`, stopping if a submission fails):
 
+0. deletes every scheduled job's log and expected outputs from a previous
+   run, so the XLSX report only reflects this run;
 1. submits `<study>_kraken.swarm` (`-g 32 -t 20`) and `<study>_qc.swarm`
    (`-g 48 -t 10`);
 2. submits MultiQC and the log report with

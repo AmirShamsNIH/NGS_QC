@@ -3,8 +3,10 @@ FASTQ file discovery and read-pair resolution.
 
 Files are grouped into samples by their Illumina-style read tag
 (``_R1`` / ``_R2``, optionally followed by a ``_NNN`` chunk number) which
-must sit immediately before the FASTQ extension.  Layout is resolved per
-sample: a sample whose R1 has a matching R2 on disk is paired-end,
+must sit immediately before the FASTQ extension.  A library split into
+several chunks (``_R1_001``, ``_R1_002`` ...) is QC'd one chunk per sample,
+named ``<stem>_<chunk>``; a single chunk keeps the plain stem.  Layout is
+resolved per sample: a sample whose R1 has a matching R2 on disk is paired-end,
 everything else is single-end, so mixed directories are handled correctly.
 
 Index reads (``_I1`` / ``_I2``) are skipped.  ``Undetermined_*`` reads are
@@ -79,6 +81,12 @@ def discover_samples(data_dir: str) -> list[Sample]:
         raise FileNotFoundError(f"No FASTQ files found in: {data_dir}")
 
     present = set(names)
+
+    # read-1 chunks per stem, to decide whether the chunk goes in the name
+    chunks: dict[str, set[str]] = {}
+    for name in names:
+        if m := _READ_TAG_RE.match(name):
+            chunks.setdefault(m.group("stem"), set()).add(m.group("chunk") or "")
     samples: dict[str, Sample] = {}
 
     def _add(sample: Sample) -> None:
@@ -98,6 +106,8 @@ def discover_samples(data_dir: str) -> list[Sample]:
 
         stem, read, chunk, ext = m.group("stem", "read", "chunk", "ext")
         mate = f"{stem}_R{'2' if read == '1' else '1'}{chunk or ''}{ext}"
+        if len(chunks[stem]) > 1:
+            stem += chunk or ""
 
         if read == "2":
             if mate not in present:
