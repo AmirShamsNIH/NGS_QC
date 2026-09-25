@@ -239,6 +239,9 @@ JSON to change the report; `{study}` in `title` is filled in.
   libraries), and the BBMap stats table (a second parse of the BBDuk stats
   file).  fastp's insert size, AfterQC's bad-read breakdown and all other
   tools are kept.
+* FastQC sections not needed in the report are removed too: per-base
+  sequence content, per-base N content, overrepresented sequences by
+  sample, adapter content (BBDuk reports adapters) and status checks.
 * `table_columns_visible`, `general_stats_columns` – General Statistics
   shows each metric once: read count from SeqKit, GC / duplication /
   length from FastQC, Q30 from fastp, plus AfterQC good bases and BBDuk
