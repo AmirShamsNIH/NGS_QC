@@ -9,7 +9,8 @@
     "fastp-duprates",
     "fastp-overrepresented-sequences",
     "fastp_overrepresented_sequences",
-    "fastp_top_overrepresented_sequences"
+    "fastp_top_overrepresented_sequences",
+    "bbmap-stats-table"
   ],
   "table_columns_visible": {
     "FastQC": {
@@ -28,10 +29,13 @@
       "good_reads": false,
       "readlen": false
     },
-    "SeqKit": {
-      "num_seqs": true,
-      "sum_len": false,
-      "avg_len": false
+    "bbtools-stats": false
+  },
+  "general_stats_columns": {
+    "seqkit": {
+      "columns": {
+        "num_seqs": {}
+      }
     }
   },
   "fn_ignore_files": [

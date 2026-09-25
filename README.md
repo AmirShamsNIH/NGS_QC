@@ -236,12 +236,15 @@ JSON to change the report; `{study}` in `title` is filled in.
   N-content, duplication and overrepresented-sequence plots are removed,
   as is fastp's filtering chart (always 100 % in report-only mode) and the
   FastQC sequence-count plot (inaccurate for deduplicated / subsampled
-  libraries).  fastp's insert size, AfterQC's bad-read breakdown and all
-  other tools are kept.
-* `table_columns_visible` – General Statistics shows each metric once:
-  read count from SeqKit, GC / duplication / length from FastQC, Q30 from
-  fastp.  Hidden columns can still be switched on in the report via
-  "Configure columns".
+  libraries), and the BBMap stats table (a second parse of the BBDuk stats
+  file).  fastp's insert size, AfterQC's bad-read breakdown and all other
+  tools are kept.
+* `table_columns_visible`, `general_stats_columns` – General Statistics
+  shows each metric once: read count from SeqKit, GC / duplication /
+  length from FastQC, Q30 from fastp, plus AfterQC good bases and BBDuk
+  adapter / PhiX %.  Hidden columns can still be switched on in the report
+  via "Configure columns"; SeqKit's columns are chosen in
+  `general_stats_columns` (it ignores `table_columns_visible`).
 * `extra_fn_clean_exts`, `table_sample_merge` – sample names are cleaned so
   each sample has one row with its R1 / R2 rows grouped underneath.
 * `module_order` – Kraken2 and Bracken are shown as separate sections.
