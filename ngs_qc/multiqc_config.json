@@ -2,6 +2,11 @@
   "title": "NGS-QC: {study}",
   "remove_sections": [
     "fastqc_sequence_counts",
+    "fastqc_per_base_sequence_content",
+    "fastqc_status_checks",
+    "fastqc_adapter_content",
+    "fastqc_overrepresented_sequences",
+    "fastqc_per_base_n_content",
     "fastp-filtered-reads-chart",
     "fastp-seq-quality",
     "fastp-seq-content-gc",
