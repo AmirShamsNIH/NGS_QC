@@ -9,14 +9,12 @@ included.  MultiQC and the log report are study-level scripts.
 
 from . import (
     afterqc,
-    bbduk,
     fastp,
     fastq_screen,
     fastqc,
     insert_size,
     kat,
     kraken,
-    seqkit,
     sortmerna,
 )
 from .base import KRAKEN_SWARM, QC_SWARM, Context, Job
@@ -27,9 +25,7 @@ PER_SAMPLE_BUILDERS = [
     kraken,        # + Bracken, chained in the same line
     fastqc,
     fastp,
-    seqkit,
     afterqc,
-    bbduk,
     insert_size,
     fastq_screen,
     sortmerna,

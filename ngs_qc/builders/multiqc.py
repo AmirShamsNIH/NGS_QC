@@ -10,15 +10,14 @@ change the report) and is copied into each study as ``multiqc_config.yaml``:
   overrepresented-sequence plots go, as does its filtering chart (always
   100 % in report-only mode); ``fastqc_sequence_counts`` is removed too
   (inaccurate for deduplicated / subsampled libraries);
-* General Statistics shows each metric once: reads from SeqKit, GC / dups
+* General Statistics shows each metric once: reads, GC / dups
   / length from FastQC, Q30 from fastp; the duplicate columns are hidden
   (still available via "Configure columns");
 * the Kraken module runs twice so Kraken2 and Bracken reports appear as
   separate sections instead of overwriting each other's samples;
 * FASTQ files (subset temporaries) are never scanned;
 * sample names are normalised so every tool reports one row per sample:
-  tool suffixes (``.kraken``, ``.bracken_report``, ``.bbduk_stats``,
-  ``.kat``, ``_subsample``, ``_subset``) are stripped and R1 / R2 rows are
+  tool suffixes (``.kraken``, ``.bracken_report``, ``.kat``, ``_subsample``, ``_subset``) are stripped and R1 / R2 rows are
   merged under the sample (``table_sample_merge``);
 * the data folder of a previous report is ignored: MultiQC >= 1.25
   re-imports ``multiqc.parquet`` from any folder it scans, which would

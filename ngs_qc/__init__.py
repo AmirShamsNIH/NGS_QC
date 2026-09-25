@@ -3,7 +3,7 @@ ngs_qc – NGS Quality Control pipeline (v2)
 ===========================================
 
 Generates HPC swarm scripts for read-only, per-sample QC (Kraken2 + Bracken,
-FastQC, fastp, SeqKit, AfterQC, BBDuk, insert size, FastQ Screen,
+FastQC, fastp, AfterQC, insert size, FastQ Screen,
 SortMeRNA, KAT) plus MultiQC and XLSX log-report steps.
 
 Typical usage

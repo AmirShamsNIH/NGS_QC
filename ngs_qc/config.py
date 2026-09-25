@@ -17,9 +17,8 @@ MODULES: dict[str, str] = {
     "kat":          "kat/2.4.2",
     "sortmerna":    "sortmerna/4.3.6",
     "bbtools":      "bbtools/39.06",
-    "seqkit":       "seqkit/2.13.0",
     "afterqc":      "afterqc/0.9.7",
-    "multiqc":      "multiqc/1.34",   # >= 1.22 needed for the SeqKit module
+    "multiqc":      "multiqc/1.34",
     "python":       "python",
 }
 

@@ -103,7 +103,7 @@ def biological_reads(sample: Sample, ctx: Context) -> list[str]:
     """Reads carrying biological sequence.
 
     In single-cell mode R1 holds cell barcodes + UMIs, so only R2 (cDNA)
-    is used by contamination / k-mer tools, fastp and BBDuk.
+    is used by contamination / k-mer tools, and fastp.
     """
     if ctx.single_cell and sample.paired:
         return [sample.rev]

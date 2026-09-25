@@ -14,13 +14,9 @@
     "fastp-duprates",
     "fastp-overrepresented-sequences",
     "fastp_overrepresented_sequences",
-    "fastp_top_overrepresented_sequences",
-    "bbmap-stats-table"
+    "fastp_top_overrepresented_sequences"
   ],
   "table_columns_visible": {
-    "FastQC": {
-      "total_sequences": false
-    },
     "fastp": {
       "after_filtering_q30_rate": true,
       "pct_duplication": false,
@@ -36,13 +32,6 @@
     },
     "bbtools-stats": false
   },
-  "general_stats_columns": {
-    "seqkit": {
-      "columns": {
-        "num_seqs": {}
-      }
-    }
-  },
   "fn_ignore_files": [
     "*.fastq.gz",
     "*.fq.gz",
@@ -52,7 +41,6 @@
   "extra_fn_clean_exts": [
     ".kraken",
     ".bracken_report",
-    ".bbduk_stats",
     ".kat",
     {
       "type": "remove",
@@ -98,9 +86,7 @@
     },
     "fastqc",
     "fastp",
-    "seqkit",
     "afterqc",
-    "bbduk",
     "bbmap",
     "fastq_screen",
     "sortmerna",

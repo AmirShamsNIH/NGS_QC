@@ -5,7 +5,7 @@ for comprehensive, **read-only** quality control of NGS FASTQ datasets on
 Slurm-based clusters (e.g. NIH Biowulf).
 
 > **No reads are modified.**  Every tool runs in observation / reporting mode
-> only.  fastp disables trimming and filtering, BBDuk and BBMerge only write
+> only.  fastp disables trimming and filtering, BBMerge only writes
 > statistics, and AfterQC runs with `--qc_only`.
 
 ---
@@ -49,9 +49,7 @@ directories that mix both.
 | [Bracken](https://ccb.jhu.edu/software/bracken/) | bracken/2.8 | Species-level abundance re-estimation, chained after Kraken2 | kraken |
 | [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) | fastqc/0.12.1 | Per-base / per-read quality metrics | qc |
 | [fastp](https://github.com/OpenGene/fastp) | fastp/0.23.2 | Quality statistics — **report only** | qc |
-| [SeqKit stats](https://bioinf.shenwei.me/seqkit/) | seqkit/2.13.0 | Read counts, lengths, GC, Q20/Q30 | qc |
 | [AfterQC](https://github.com/OpenGene/AfterQC) | afterqc/0.9.7 | Quality / bias / overlap report (`--qc_only`) | qc |
-| [BBDuk](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/) | bbtools/39.06 | Adapter and PhiX content — **report only** | qc |
 | Insert size ([BBMerge](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/)) | bbtools/39.06 | Overlap-based insert-size histogram (paired bulk only) | qc |
 | [FastQ Screen](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/) | fastq_screen/0.15.3 | Multi-genome contamination check | qc |
 | [SortMeRNA](https://github.com/sortmerna/sortmerna) | sortmerna/4.3.6 | rRNA fraction (on a 5 % sub-sample) | qc |
@@ -92,9 +90,7 @@ NGS_QC_v2/
         ├── kraken.py           # Kraken2 + Bracken
         ├── fastqc.py
         ├── fastp.py
-        ├── seqkit.py
         ├── afterqc.py
-        ├── bbduk.py
         ├── insert_size.py      # BBMerge ihist
         ├── fastq_screen.py
         ├── sortmerna.py
@@ -164,8 +160,8 @@ and the cDNA in R2.  Barcodes do not map to any genome, so with
 
 | Tool | Bulk (default) | `--single-cell` |
 |------|---------------|-----------------|
-| FastQC, SeqKit, AfterQC, SortMeRNA | R1 + R2 | R1 + R2 |
-| fastp, BBDuk | R1 + R2 | R2 only |
+| FastQC, AfterQC, SortMeRNA | R1 + R2 | R1 + R2 |
+| fastp | R1 + R2 | R2 only |
 | Kraken2 (+ Bracken) | R1 + R2 paired | R2 only |
 | FastQ Screen | R1 + R2 | R2 only |
 | KAT | R1 + R2 | R2 only |
@@ -197,7 +193,7 @@ default 5 % BBTools sub-sample.
     ├── qc_manifest.json           ← every scheduled job + expected outputs
     ├── multiqc_config.yaml
     ├── <study>_multiqc_report.html    (after the run)
-    ├── kraken/  bracken/  fastqc/  fastp/  seqkit/  afterqc/  bbduk/
+    ├── kraken/  bracken/  fastqc/  fastp/  afterqc/
     ├── insert_size/  fastq_screen/  sortmerna/  kat/
     └── swarm_logs/
 ```
@@ -236,18 +232,15 @@ JSON to change the report; `{study}` in `title` is filled in.
   N-content, duplication and overrepresented-sequence plots are removed,
   as is fastp's filtering chart (always 100 % in report-only mode) and the
   FastQC sequence-count plot (inaccurate for deduplicated / subsampled
-  libraries), and the BBMap stats table (a second parse of the BBDuk stats
-  file).  fastp's insert size, AfterQC's bad-read breakdown and all other
+  libraries).  fastp's insert size, AfterQC's bad-read breakdown and all other
   tools are kept.
 * FastQC sections not needed in the report are removed too: per-base
   sequence content, per-base N content, overrepresented sequences by
-  sample, adapter content (BBDuk reports adapters) and status checks.
-* `table_columns_visible`, `general_stats_columns` – General Statistics
-  shows each metric once: read count from SeqKit, GC / duplication /
-  length from FastQC, Q30 from fastp, plus AfterQC good bases and BBDuk
-  adapter / PhiX %.  Hidden columns can still be switched on in the report
-  via "Configure columns"; SeqKit's columns are chosen in
-  `general_stats_columns` (it ignores `table_columns_visible`).
+  sample, adapter content and status checks.
+* `table_columns_visible` – General Statistics shows each metric once:
+  read count, GC, duplication and length from FastQC, Q30 from fastp.
+  Hidden columns can still be switched on in the report via
+  "Configure columns".
 * `extra_fn_clean_exts`, `table_sample_merge` – sample names are cleaned so
   each sample has one row with its R1 / R2 rows grouped underneath.
 * `module_order` – Kraken2 and Bracken are shown as separate sections.

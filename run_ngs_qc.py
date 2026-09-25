@@ -36,9 +36,7 @@ QC tools
   Kraken2 + Bracken  – taxonomic contamination screening / species abundance
   FastQC             – per-base / per-read quality metrics
   fastp              – quality statistics (report-only; no reads are modified)
-  SeqKit stats       – read counts, lengths, GC, Q20/Q30
   AfterQC            – quality / bias report (--qc_only)
-  BBDuk              – adapter and PhiX content (report-only)
   Insert size        – BBMerge overlap-based insert-size histogram (paired bulk)
   FastQ Screen       – multi-genome contamination check
   SortMeRNA          – rRNA fraction detection
@@ -66,7 +64,7 @@ Options
     Label used for sub-directories and file prefixes.
     Defaults to the basename of INPUT_DIR.
 --single-cell
-    Kraken2, FastQ Screen, KAT, fastp and BBDuk process only R2 (cDNA)
+    Kraken2, FastQ Screen, KAT and fastp process only R2 (cDNA)
     reads, and insert size is skipped.  FastQC and the other per-read
     tools still run on all reads.
 --kraken-db PATH
@@ -426,7 +424,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         default=False,
         help=(
-            "Single-cell mode: Kraken2, FastQ Screen, KAT, fastp and BBDuk "
+            "Single-cell mode: Kraken2, FastQ Screen, KAT and fastp "
             "process only R2 (cDNA reads) and insert size "
             "is skipped. Other tools still run on all reads."
         ),
