@@ -85,6 +85,7 @@ NGS_QC_v2/
     ├── __init__.py
     ├── config.py               # Module versions, DB paths, swarm resources
     ├── fastq.py                # Sample discovery, pairing, subset helper
+    ├── multiqc_config.json     # MultiQC report customisation (edit me)
     └── builders/
         ├── __init__.py         # PER_SAMPLE_BUILDERS: tool order
         ├── base.py             # Context / Job types, shell helpers
@@ -98,7 +99,7 @@ NGS_QC_v2/
         ├── fastq_screen.py
         ├── sortmerna.py
         ├── kat.py
-        ├── multiqc.py          # MultiQC sbatch script + multiqc_config.yaml
+        ├── multiqc.py          # MultiQC sbatch script + study config
         └── log_report.py       # Log collection sbatch script
 ```
 
@@ -226,12 +227,28 @@ python collect_qc_logs.py /path/to/output/MyStudy MyStudy
 
 ### MultiQC report
 
-Configured by `<study>/multiqc_config.yaml`: the FastQC sequence-count plot
-is removed (inaccurate for deduplicated / subsampled libraries), Kraken2
-and Bracken are shown as separate sections, and sample names are cleaned
-so the General Statistics table has one row per sample with its R1 / R2
-rows grouped underneath.  A previous report's `*_multiqc_report_data`
-folder is ignored so re-runs never mix in old data.
+The report is customised by **`ngs_qc/multiqc_config.json`**, copied into
+each study as `<study>/multiqc_config.yaml` (JSON is valid YAML).  Edit the
+JSON to change the report; `{study}` in `title` is filled in.
+
+* `remove_sections` – sections dropped because another tool shows the same
+  thing.  FastQC is the primary per-read QC, so fastp's quality, GC,
+  N-content, duplication and overrepresented-sequence plots are removed,
+  as is fastp's filtering chart (always 100 % in report-only mode) and the
+  FastQC sequence-count plot (inaccurate for deduplicated / subsampled
+  libraries).  fastp's insert size, AfterQC's bad-read breakdown and all
+  other tools are kept.
+* `table_columns_visible` – General Statistics shows each metric once:
+  read count from SeqKit, GC / duplication / length from FastQC, Q30 from
+  fastp.  Hidden columns can still be switched on in the report via
+  "Configure columns".
+* `extra_fn_clean_exts`, `table_sample_merge` – sample names are cleaned so
+  each sample has one row with its R1 / R2 rows grouped underneath.
+* `module_order` – Kraken2 and Bracken are shown as separate sections.
+
+Section IDs are the anchors in the report HTML (e.g. `#fastp-seq-quality`).
+A previous report's `*_multiqc_report_data` folder is ignored so re-runs
+never mix in old data.
 
 ---
 
@@ -269,6 +286,9 @@ Edit `ngs_qc/config.py`:
 | `KRAKEN_SWARM_MEMORY_GB`, `KRAKEN_SWARM_THREADS` | Kraken swarm resources |
 | `SWARM_MEMORY_GB`, `SWARM_THREADS`, `SWARM_TIME`, `SWARM_PARTITION` | QC swarm resources |
 | `MULTIQC_*` | MultiQC sbatch resources |
+
+The MultiQC report itself is customised in `ngs_qc/multiqc_config.json`
+(see [MultiQC report](#multiqc-report)).
 
 ---
 

@@ -1,0 +1,100 @@
+{
+  "title": "NGS-QC: {study}",
+  "remove_sections": [
+    "fastqc_sequence_counts",
+    "fastp-filtered-reads-chart",
+    "fastp-seq-quality",
+    "fastp-seq-content-gc",
+    "fastp-seq-content-n",
+    "fastp-duprates",
+    "fastp-overrepresented-sequences",
+    "fastp_overrepresented_sequences",
+    "fastp_top_overrepresented_sequences"
+  ],
+  "table_columns_visible": {
+    "FastQC": {
+      "total_sequences": false
+    },
+    "fastp": {
+      "after_filtering_q30_rate": true,
+      "pct_duplication": false,
+      "filtering_result_passed_filter_reads": false,
+      "after_filtering_gc_content": false,
+      "pct_surviving": false,
+      "pct_adapter": false
+    },
+    "AfterQC": {
+      "total_reads": false,
+      "good_reads": false,
+      "readlen": false
+    },
+    "SeqKit": {
+      "num_seqs": true,
+      "sum_len": false,
+      "avg_len": false
+    }
+  },
+  "fn_ignore_files": [
+    "*.fastq.gz",
+    "*.fq.gz",
+    "*.fastq",
+    "*.fq"
+  ],
+  "extra_fn_clean_exts": [
+    ".kraken",
+    ".bracken_report",
+    ".bbduk_stats",
+    ".kat",
+    {
+      "type": "remove",
+      "pattern": "_subsample"
+    },
+    {
+      "type": "remove",
+      "pattern": "_subset"
+    }
+  ],
+  "table_sample_merge": {
+    "R1": [
+      {
+        "type": "regex",
+        "pattern": "_R1(?=(_\\d{3})?$)"
+      }
+    ],
+    "R2": [
+      {
+        "type": "regex",
+        "pattern": "_R2(?=(_\\d{3})?$)"
+      }
+    ]
+  },
+  "module_order": [
+    {
+      "kraken": {
+        "name": "Kraken2",
+        "anchor": "kraken2",
+        "path_filters": [
+          "kraken/*"
+        ]
+      }
+    },
+    {
+      "kraken": {
+        "name": "Bracken",
+        "anchor": "bracken",
+        "path_filters": [
+          "bracken/*_report.txt"
+        ]
+      }
+    },
+    "fastqc",
+    "fastp",
+    "seqkit",
+    "afterqc",
+    "bbduk",
+    "bbmap",
+    "fastq_screen",
+    "sortmerna",
+    "kat"
+  ]
+}
